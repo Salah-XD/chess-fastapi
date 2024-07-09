@@ -64,7 +64,7 @@ curl -X POST "http://localhost:8000/chess/queen" -H "Content-Type: application/j
 ```sh
 curl -X POST "http://localhost:8000/chess/rook" -H "Content-Type: application/json" -d '{
     "positions": {
-        "Queen": "A5",
+        "Queen": "A5",cker
         "Bishop": "G8",
         "Rook": "H5",
         "Knight": "G4"
