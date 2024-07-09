@@ -2,11 +2,7 @@ dist
 build
 *.log
 venv
-
-# Ignore specific files
 .env
 .DS_Store
-
-# Ignore FastAPI specific files
 __pycache__
 .pytest_cache

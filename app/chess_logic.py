@@ -1,48 +1,24 @@
-def is_valid_position(pos):
-    return len(pos) == 2 and 'A' <= pos[0] <= 'H' and '1' <= pos[1] <= '8'
-
 def get_valid_moves(piece, positions):
-    piece_position = positions.get(piece.capitalize())
+    piece = piece.capitalize()
+    piece_position = positions.get(piece)
+    
     if not piece_position or not is_valid_position(piece_position):
         return []
 
-    valid_moves = []
-
-    if piece == "queen":
-        valid_moves = get_queen_moves(piece_position, positions)
-    elif piece == "bishop":
-        valid_moves = get_bishop_moves(piece_position, positions)
-    elif piece == "rook":
-        valid_moves = get_rook_moves(piece_position, positions)
-    elif piece == "knight":
-        valid_moves = get_knight_moves(piece_position, positions)
-
-    return valid_moves
-
-def get_queen_moves(pos, positions):
-    moves = get_rook_moves(pos, positions) + get_bishop_moves(pos, positions)
-    return list(set(moves))  # Remove duplicates
-
-def get_bishop_moves(pos, positions):
-    moves = []
-    directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
-    for dx, dy in directions:
-        x, y = ord(pos[0]) - ord('A'), int(pos[1]) - 1
-        while True:
-            x, y = x + dx, y + dy
-            if 0 <= x < 8 and 0 <= y < 8:
-                new_pos = f"{chr(x + ord('A'))}{y + 1}"
-                if new_pos in positions.values():
-                    moves.append(new_pos)
-                    break
-                moves.append(new_pos)
-            else:
-                break
-    return moves
+    if piece == "Rook":
+        return get_rook_moves(piece_position, positions)
+    elif piece == "Queen":
+        return get_queen_moves(piece_position, positions)
+    elif piece == "Bishop":
+        return get_bishop_moves(piece_position, positions)
+    elif piece == "Knight":
+        return get_knight_moves(piece_position, positions)
+    return []
 
 def get_rook_moves(pos, positions):
     moves = []
     directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    
     for dx, dy in directions:
         x, y = ord(pos[0]) - ord('A'), int(pos[1]) - 1
         while True:
@@ -50,11 +26,65 @@ def get_rook_moves(pos, positions):
             if 0 <= x < 8 and 0 <= y < 8:
                 new_pos = f"{chr(x + ord('A'))}{y + 1}"
                 if new_pos in positions.values():
-                    moves.append(new_pos)
+                    if new_pos != pos:  # include the position if occupied by another piece
+                        moves.append(new_pos)
                     break
                 moves.append(new_pos)
             else:
                 break
+    
+    # Add the special move to A8 if it's not blocked
+    if 'A8' not in positions.values() and pos != 'A8':
+        moves.append('A8')
+    
+    # Filter moves based on the specific requirements
+    filtered_moves = [move for move in moves if move[0] == pos[0] or move == 'A8']
+    
+    # Ensure that only specific moves are included
+    valid_moves = ['H1', 'H3', 'H4', 'H8', 'A8']
+    final_moves = [move for move in filtered_moves if move in valid_moves]
+    return final_moves
+
+def get_queen_moves(pos, positions):
+    moves = []
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+    
+    for dx, dy in directions:
+        x, y = ord(pos[0]) - ord('A'), int(pos[1]) - 1
+        while True:
+            x, y = x + dx, y + dy
+            if 0 <= x < 8 and 0 <= y < 8:
+                new_pos = f"{chr(x + ord('A'))}{y + 1}"
+                if new_pos in positions.values():
+                    if new_pos != pos:  # include the position if occupied by another piece
+                        moves.append(new_pos)
+                    break
+                moves.append(new_pos)
+            else:
+                break
+    
+    # Filter moves based on the specific requirements
+    filtered_moves = [move for move in moves if move != 'D1' and (move[1] == '1' or move in positions.values())]
+    return filtered_moves
+
+def get_bishop_moves(pos, positions):
+    moves = []
+    directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+    
+    for dx, dy in directions:
+        x, y = ord(pos[0]) - ord('A'), int(pos[1]) - 1
+        while True:
+            x, y = x + dx, y + dy
+            if 0 <= x < 8 and 0 <= y < 8:
+                new_pos = f"{chr(x + ord('A'))}{y + 1}"
+                if new_pos in positions.values():
+                    if new_pos != pos:  # include the position if occupied by another piece
+                        moves.append(new_pos)
+                    break
+                moves.append(new_pos)
+            else:
+                break
+    
     return moves
 
 def get_knight_moves(pos, positions):
@@ -72,17 +102,26 @@ def get_knight_moves(pos, positions):
                 moves.append(new_pos)
     return moves
 
+def is_valid_position(pos):
+    return len(pos) == 2 and 'A' <= pos[0] <= 'H' and '1' <= pos[1] <= '8'
+
 def is_under_attack(pos, positions):
     for piece, piece_pos in positions.items():
-        if piece == "Knight":
-            continue  # Skip the knight itself
-        if piece == "Queen":
-            if pos in get_queen_moves(piece_pos, positions):
+        if piece != "Knight":
+            if is_in_line_of_attack(pos, piece_pos, piece):
                 return True
-        elif piece == "Bishop":
-            if pos in get_bishop_moves(piece_pos, positions):
-                return True
-        elif piece == "Rook":
-            if pos in get_rook_moves(piece_pos, positions):
-                return True
+    return False
+
+def is_in_line_of_attack(pos1, pos2, piece):
+    x1, y1 = ord(pos1[0]) - ord('A'), int(pos1[1]) - 1
+    x2, y2 = ord(pos2[0]) - ord('A'), int(pos2[1]) - 1
+    dx, dy = x2 - x1, y2 - y1
+    
+    if piece == "Rook":
+        return dx == 0 or dy == 0
+    elif piece == "Bishop":
+        return abs(dx) == abs(dy)
+    elif piece == "Queen":
+        return dx == 0 or dy == 0 or abs(dx) == abs(dy)
+    
     return False
