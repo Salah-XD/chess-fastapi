@@ -36,5 +36,39 @@ This is a FastAPI application that provides an API endpoint to determine the val
 
 Use tools like Postman or curl to test the API endpoints. For example:
 
+
+
 ```sh
-curl -X POST "http://localhost:8000/chess/knight" -H "Content-Type: application/json" -d '{"positions": {"Queen": "E7", "Bishop": "B7", "Rook": "G5", "Knight": "C3"}}'
+curl -X POST "http://localhost:8000/chess/queen" -H "Content-Type: application/json" -d '{
+    "positions": {
+        "Queen": "E7",
+        "Bishop": "B7",
+        "Rook": "G5",
+        "Knight": "C3"
+    }
+}'
+
+```
+```sh
+curl -X POST "http://localhost:8000/chess/queen" -H "Content-Type: application/json" -d '{
+    "positions": {
+        "Queen": "H1",
+        "Bishop": "B7",
+        "Rook": "H8",
+        "Knight": "F3"
+    }
+}'
+
+```
+
+```sh
+curl -X POST "http://localhost:8000/chess/rook" -H "Content-Type: application/json" -d '{
+    "positions": {
+        "Queen": "A5",
+        "Bishop": "G8",
+        "Rook": "H5",
+        "Knight": "G4"
+    }
+}'
+
+```
