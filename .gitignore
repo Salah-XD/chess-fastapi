@@ -1,8 +1,6 @@
 venv/
 __pycache__/
 *.log
-*.db
-docs/_build/
 .vscode/
 .idea/
 *.pyc

@@ -39,7 +39,7 @@ Use tools like Postman or curl to test the API endpoints. For example:
 
 
 ```sh
-curl -X POST "http://localhost:8000/chess/queen" -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:8000/chess/knight" -H "Content-Type: application/json" -d '{
     "positions": {
         "Queen": "E7",
         "Bishop": "B7",
