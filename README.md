@@ -5,31 +5,15 @@ This is a FastAPI application that provides an API endpoint to determine the val
 ## Setup
 
 
-1. Activate the virtual environment:
-   - On Windows:
-     ```sh
-     venv\Scripts\activate
-     ```
-   - On Linux:
-     ```sh
-     source venv/bin/activate
-     ```
-
-2. Install the necessary packages:
+1. pull the image from docker hub:
 
    ```sh
     pip install -r requirements.txt   
     ```
 
-
-3. Build the Docker image:
+2. Run the Docker container:
    ```sh
-   docker build -t chess-api .
-   ```
-
-4. Run the Docker container:
-   ```sh
-   docker run -d --name chess-api -p 8000:8000 chess-api
+   docker run -d --name chess-api -p 8000:8000 salahxd/chess-api
    ```
 
 ## Usage
