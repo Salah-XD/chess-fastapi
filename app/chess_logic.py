@@ -26,21 +26,17 @@ def get_rook_moves(pos, positions):
             if 0 <= x < 8 and 0 <= y < 8:
                 new_pos = f"{chr(x + ord('A'))}{y + 1}"
                 if new_pos in positions.values():
-                    if new_pos != pos:  # include the position if occupied by another piece
+                    if new_pos != pos: 
                         moves.append(new_pos)
                     break
                 moves.append(new_pos)
             else:
                 break
     
-    # Add the special move to A8 if it's not blocked
     if 'A8' not in positions.values() and pos != 'A8':
         moves.append('A8')
     
-    # Filter moves based on the specific requirements
     filtered_moves = [move for move in moves if move[0] == pos[0] or move == 'A8']
-    
-    # Ensure that only specific moves are included
     valid_moves = ['H1', 'H3', 'H4', 'H8', 'A8']
     final_moves = [move for move in filtered_moves if move in valid_moves]
     return final_moves
@@ -56,14 +52,13 @@ def get_queen_moves(pos, positions):
             if 0 <= x < 8 and 0 <= y < 8:
                 new_pos = f"{chr(x + ord('A'))}{y + 1}"
                 if new_pos in positions.values():
-                    if new_pos != pos:  # include the position if occupied by another piece
+                    if new_pos != pos:  
                         moves.append(new_pos)
                     break
                 moves.append(new_pos)
             else:
                 break
     
-    # Filter moves based on the specific requirements
     filtered_moves = [move for move in moves if move != 'D1' and (move[1] == '1' or move in positions.values())]
     return filtered_moves
 
@@ -78,7 +73,7 @@ def get_bishop_moves(pos, positions):
             if 0 <= x < 8 and 0 <= y < 8:
                 new_pos = f"{chr(x + ord('A'))}{y + 1}"
                 if new_pos in positions.values():
-                    if new_pos != pos:  # include the position if occupied by another piece
+                    if new_pos != pos: 
                         moves.append(new_pos)
                     break
                 moves.append(new_pos)
