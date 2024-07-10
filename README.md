@@ -8,7 +8,7 @@ This is a FastAPI application that provides an API endpoint to determine the val
 1. pull the image from docker hub:
 
    ```sh
-    pip install -r requirements.txt   
+   docker pull salahxd/chess-api   
     ```
 
 2. Run the Docker container:
